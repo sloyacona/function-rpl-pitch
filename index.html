@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function Health - Reproductive Health Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .nav {
+            background: #faf8f5;
+            border-bottom: 1px solid #e8e3dc;
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 500;
+            color: #000000;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #b86f50 0%, #a66346 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 3px,
+                rgba(255,255,255,0.15) 3px,
+                rgba(255,255,255,0.15) 6px
+            );
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 48px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #737373;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 400;
+            transition: color 0.2s;
+            letter-spacing: -0.01em;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #000000;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        .hero {
+            padding: 120px 0 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 400;
+            margin-bottom: 32px;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: #000000;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #737373;
+            max-width: 680px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .cta-button {
+            background: #b86f50;
+            color: white;
+            padding: 18px 48px;
+            border: none;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: -0.01em;
+        }
+
+        .cta-button:hover {
+            background: #a66346;
+            transform: scale(1.02);
+        }
+
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .section-title em {
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .section-subtitle {
+            font-size: 20px;
+            color: #737373;
+            text-align: center;
+            margin-bottom: 72px;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            letter-spacing: -0.01em;
+            font-weight: 400;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 64px;
+            margin-bottom: 100px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 56px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            color: #000000;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-item p {
+            font-size: 17px;
+            color: #737373;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .panels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 72px;
+        }
+
+        .panel-card {
+            background: #f5f2ed;
+            border: 1px solid #e8e3dc;
+            border-radius: 16px;
+            padding: 48px 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .panel-card:hover {
+            border-color: #b86f50;
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(184, 111, 80, 0.1);
+        }
+
+        .panel-card.recommended {
+            border-color: #b86f50;
+            background: #ffffff;
+            position: relative;
+            border-width: 2px;
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -14px;
+            right: 32px;
+            background: #b86f50;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .panel-name {
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .panel-price {
+            font-size: 40px;
+            font-weight: 400;
+            margin: 24px 0;
+            letter-spacing: -0.02em;
+        }
+
+        .panel-description {
+            color: #737373;
+            margin-bottom: 32px;
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .panel-features {
+            list-style: none;
+            margin: 32px 0;
+        }
+
+        .panel-features li {
+            padding: 10px 0;
+            color: #737373;
+            font-size: 15px;
+            display: flex;
+            align-items: flex-start;
+            line-height: 1.5;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .panel-features li:before {
+            content: "✓";
+            color: #000000;
+            font-weight: 500;
+            margin-right: 14px;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .results-dashboard {
+            background: #f5f2ed;
+            border-radius: 16px;
+            padding: 48px;
+            margin-top: 48px;
+        }
+
+        .result-category {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 28px;
+            border: 1px solid #e8e3dc;
+        }
+
+        .result-category h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .status-badge {
+            font-size: 12px;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .status-normal {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-concern {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .status-flagged {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .result-items {
+            display: grid;
+            gap: 20px;
+        }
+
+        .result-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 3fr;
+            gap: 24px;
+            padding: 20px;
+            background: #f5f2ed;
+            border-radius: 8px;
+            align-items: center;
+        }
+
+        .result-label {
+            font-weight: 400;
+            font-size: 15px;
+            letter-spacing: -0.01em;
+            color: #000000;
+        }
+
+        .result-value {
+            font-weight: 500;
+            font-size: 16px;
+            letter-spacing: -0.01em;
+            color: #000000;
+        }
+
+        .result-range {
+            color: #737373;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .result-interpretation {
+            font-size: 14px;
+            color: #737373;
+            line-height: 1.5;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .rpl-insight {
+            background: #f5f9ff;
+            border-left: 3px solid #2563eb;
+            padding: 24px;
+            margin-top: 24px;
+            border-radius: 8px;
+        }
+
+        .rpl-insight h4 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #2563eb;
+            letter-spacing: -0.01em;
+        }
+
+        .rpl-insight p {
+            font-size: 15px;
+            color: #525252;
+            line-height: 1.6;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .specialist-card {
+            background: white;
+            border: 1px solid #e8e3dc;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 28px;
+            transition: all 0.2s ease;
+        }
+
+        .specialist-card:hover {
+            border-color: #b86f50;
+            box-shadow: 0 8px 24px rgba(184, 111, 80, 0.08);
+        }
+
+        .specialist-avatar {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: #f5f2ed;
+            flex-shrink: 0;
+        }
+
+        .specialist-info h4 {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+
+        .specialist-info p {
+            color: #737373;
+            font-size: 15px;
+            margin-bottom: 10px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .specialist-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .tag {
+            background: #f5f2ed;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            color: #525252;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 56px;
+            margin-top: 72px;
+        }
+
+        .feature-card {
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: #b86f50;
+            border-radius: 16px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .feature-card p {
+            color: #737373;
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        @media (max-width: 768px) {
+            .panels-grid,
+            .stats,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .result-item {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-content {
+                padding: 0 24px;
+            }
+
+            .container {
+                padding: 0 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                Function Health
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="panels">Panels</a></li>
+                <li><a href="#" class="nav-link" data-page="results">Sample Results</a></li>
+                <li><a href="#" class="nav-link" data-page="specialists">Specialists</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+        <div class="hero">
+            <div class="container">
+                <h1>Reproductive Health<br>Testing That Goes <em>Deeper</em></h1>
+                <p>After pregnancy loss, you deserve answers. Our comprehensive testing panels help identify underlying factors that standard care often misses.</p>
+                <button class="cta-button" onclick="navigateTo('panels')">Explore Testing Panels</button>
+            </div>
+        </div>
+
+        <div class="section" style="background: #f5f2ed;">
+            <div class="container">
+                <div class="stats">
+                    <div class="stat-item">
+                        <h3>15-25%</h3>
+                        <p>of pregnancies end in miscarriage</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>40-50%</h3>
+                        <p>of RPL cases have identifiable causes*</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>25-35</h3>
+                        <p>specialized biomarkers tested</p>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="font-size: 13px; color: #888;">*Source: ASRM Committee Opinion, Yale Medicine RPL Program</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <h2 class="section-title">Why Reproductive Health <em>Testing?</em></h2>
+                <p class="section-subtitle">Standard care often waits until after 2-3 losses. We believe in proactive, comprehensive testing to give you answers sooner.</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔬</div>
+                        <h3>Comprehensive Testing</h3>
+                        <p>Go beyond basic labs with specialized panels for thrombophilia, autoimmune conditions, and hormonal factors linked to pregnancy loss.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>RPL-Specific Insights</h3>
+                        <p>Results interpreted specifically for recurrent pregnancy loss context, not just generic reference ranges.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👥</div>
+                        <h3>Specialist Matching</h3>
+                        <p>Connect with reproductive specialists who understand your results and can guide evidence-based treatment.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 80px;">
+                    <h3 style="font-size: 32px; text-align: center; margin-bottom: 48px; font-weight: 400; letter-spacing: -0.02em;">What Members Are <em>Saying</em></h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+                        <div style="background: white; padding: 32px; border-radius: 12px; border: 1px solid #e8e3dc;">
+                            <p style="font-size: 15px; line-height: 1.6; color: #525252; margin-bottom: 20px; font-style: italic;">"After my second loss, my OB said to 'try again and see what happens.' Function's RPL panel found Factor V Leiden. Now I'm on Lovenox and 16 weeks pregnant. This literally saved my pregnancy."</p>
+                            <div style="font-weight: 500; font-size: 14px;">Sarah M.</div>
+                            <div style="font-size: 13px; color: #737373;">Function member since 2024</div>
+                        </div>
+                        <div style="background: white; padding: 32px; border-radius: 12px; border: 1px solid #e8e3dc;">
+                            <p style="font-size: 15px; line-height: 1.6; color: #525252; margin-bottom: 20px; font-style: italic;">"I wish I'd done this testing before trying to conceive. Finding out about my thrombophilia proactively would have saved me months of heartbreak. Every woman planning a family should have access to this."</p>
+                            <div style="font-weight: 500; font-size: 14px;">Jessica L.</div>
+                            <div style="font-size: 13px; color: #737373;">Los Angeles, CA</div>
+                        </div>
+                        <div style="background: white; padding: 32px; border-radius: 12px; border: 1px solid #e8e3dc;">
+                            <p style="font-size: 15px; line-height: 1.6; color: #525252; margin-bottom: 20px; font-style: italic;">"The specialist consultation was invaluable. She walked me through my positive APS results and created a treatment plan. I went from terrified to empowered in one conversation."</p>
+                            <div style="font-weight: 500; font-size: 14px;">Amanda K.</div>
+                            <div style="font-size: 13px; color: #737373;">Denver, CO</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" style="background: #f5f2ed;">
+            <div class="container" style="text-align: center;">
+                <h2 class="section-title">Built for Function <em>Members</em></h2>
+                <p class="section-subtitle">Add specialized reproductive testing to your existing Function membership. All the convenience you know, with deeper insights for your family planning journey.</p>
+                <button class="cta-button" onclick="navigateTo('panels')">View Testing Options</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <h2 class="section-title">The Business <em>Opportunity</em></h2>
+                <p class="section-subtitle">A high-margin vertical that solves a critical unmet need for our existing member base</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-top: 60px;">
+                    <div style="background: white; padding: 40px; border-radius: 16px; border: 1px solid #e8e3dc;">
+                        <h3 style="font-size: 28px; margin-bottom: 20px; font-weight: 400; letter-spacing: -0.02em;">Market Size</h3>
+                        <div style="margin-bottom: 24px;">
+                            <div style="font-size: 48px; font-weight: 400; color: #b86f50; margin-bottom: 8px;">1M+</div>
+                            <div style="color: #737373; font-size: 16px;">U.S. women experience pregnancy loss annually</div>
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <div style="font-size: 48px; font-weight: 400; color: #b86f50; margin-bottom: 8px;">15-25%</div>
+                            <div style="color: #737373; font-size: 16px;">of known pregnancies end in miscarriage</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 48px; font-weight: 400; color: #b86f50; margin-bottom: 8px;">3.5M</div>
+                            <div style="color: #737373; font-size: 16px;">women trying to conceive in U.S. annually</div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; padding: 40px; border-radius: 16px; border: 1px solid #e8e3dc;">
+                        <h3 style="font-size: 28px; margin-bottom: 20px; font-weight: 400; letter-spacing: -0.02em;">Revenue Potential</h3>
+                        <div style="margin-bottom: 24px;">
+                            <div style="font-size: 48px; font-weight: 400; color: #b86f50; margin-bottom: 8px;">$150-200</div>
+                            <div style="color: #737373; font-size: 16px;">Margin per Comprehensive panel</div>
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <div style="font-size: 48px; font-weight: 400; color: #b86f50; margin-bottom: 8px;">$20M+</div>
+                            <div style="color: #737373; font-size: 16px;">Annual revenue at 250K members (10% attach rate)</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 48px; font-weight: 400; color: #b86f50; margin-bottom: 8px;">$40M+</div>
+                            <div style="color: #737373; font-size: 16px;">Potential at 500K members</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #f5f2ed; padding: 48px; border-radius: 16px; margin-top: 40px;">
+                    <h3 style="font-size: 24px; margin-bottom: 32px; text-align: center; font-weight: 400;">Strategic Advantages</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+                        <div>
+                            <div style="font-weight: 500; margin-bottom: 12px; font-size: 18px;">🎯 New Member Acquisition</div>
+                            <p style="font-size: 15px; color: #737373; line-height: 1.6;">Women join Function specifically for RPL testing, then stay for comprehensive health. Opens entirely new top-of-funnel.</p>
+                        </div>
+                        <div>
+                            <div style="font-weight: 500; margin-bottom: 12px; font-size: 18px;">💰 High LTV + Retention</div>
+                            <p style="font-size: 15px; color: #737373; line-height: 1.6;">Average 1.5-2 tests per customer (initial + follow-up). When you help save someone's pregnancy, they become lifetime advocates.</p>
+                        </div>
+                        <div>
+                            <div style="font-weight: 500; margin-bottom: 12px; font-size: 18px;">⚡ Fast Launch</div>
+                            <p style="font-size: 15px; color: #737373; line-height: 1.6;">Leverage existing Quest/LabCorp partnerships. No new infrastructure needed. 60-90 day launch.</p>
+                        </div>
+                        <div>
+                            <div style="font-weight: 500; margin-bottom: 12px; font-size: 18px;">🏆 12-18 Month Moat</div>
+                            <p style="font-size: 15px; color: #737373; line-height: 1.6;">First comprehensive DTC RPL testing. Modern Fertility/Everlywell only test basic hormones. Traditional care waits for 3 losses.</p>
+                        </div>
+                        <div>
+                            <div style="font-weight: 500; margin-bottom: 12px; font-size: 18px;">📈 Gateway to $100M Platform</div>
+                            <p style="font-size: 15px; color: #737373; line-height: 1.6;">Opens fertility → prenatal → postpartum → menopause verticals. Becomes the comprehensive women's health platform.</p>
+                        </div>
+                        <div>
+                            <div style="font-weight: 500; margin-bottom: 12px; font-size: 18px;">💡 Mission Aligned</div>
+                            <p style="font-size: 15px; color: #737373; line-height: 1.6;">Preventive testing that changes outcomes. Classic Function value proposition applied to reproductive health.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 60px; background: white; padding: 48px; border-radius: 16px; border: 1px solid #e8e3dc;">
+                    <h3 style="font-size: 24px; margin-bottom: 24px; text-align: center; font-weight: 400;">Member Acquisition Flywheel</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 32px;">
+                        <div style="text-align: center;">
+                            <div style="width: 60px; height: 60px; background: #b86f50; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 24px;">1</div>
+                            <div style="font-weight: 500; margin-bottom: 8px;">Member Discovery</div>
+                            <div style="font-size: 14px; color: #737373;">Woman has pregnancy loss, searches for answers</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 60px; height: 60px; background: #b86f50; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 24px;">2</div>
+                            <div style="font-weight: 500; margin-bottom: 8px;">Function Onboarding</div>
+                            <div style="font-size: 14px; color: #737373;">Joins for baseline health screening ($365/yr)</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 60px; height: 60px; background: #b86f50; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 24px;">3</div>
+                            <div style="font-weight: 500; margin-bottom: 8px;">RPL Panel Add-On</div>
+                            <div style="font-size: 14px; color: #737373;">Discovers Factor V Leiden, gets actionable treatment</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 60px; height: 60px; background: #b86f50; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 24px;">4</div>
+                            <div style="font-weight: 500; margin-bottom: 8px;">Word of Mouth</div>
+                            <div style="font-size: 14px; color: #737373;">Shares success story, brings 3-5 friends to Function</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 60px; background: #f5f2ed; padding: 48px; border-radius: 16px;">
+                    <h3 style="font-size: 28px; margin-bottom: 32px; text-align: center; font-weight: 400;">Why <em>Now?</em></h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;">
+                        <div>
+                            <h4 style="font-size: 18px; font-weight: 500; margin-bottom: 12px; color: #b86f50;">📈 Market Momentum</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; color: #525252; font-size: 15px; line-height: 1.8;">
+                                <li style="margin-bottom: 8px;">→ Average maternal age increasing (now 27.3 years)</li>
+                                <li style="margin-bottom: 8px;">→ More women delaying pregnancy to 35+</li>
+                                <li style="margin-bottom: 8px;">→ Growing awareness of preventive reproductive health</li>
+                                <li style="margin-bottom: 8px;">→ DTC health testing normalized post-COVID</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 18px; font-weight: 500; margin-bottom: 12px; color: #b86f50;">🏆 First-Mover Advantage</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; color: #525252; font-size: 15px; line-height: 1.8;">
+                                <li style="margin-bottom: 8px;">→ No DTC competitor offers comprehensive RPL panels</li>
+                                <li style="margin-bottom: 8px;">→ Modern Fertility/Everlywell only test basic hormones</li>
+                                <li style="margin-bottom: 8px;">→ Traditional care still waits for 2-3 losses</li>
+                                <li style="margin-bottom: 8px;">→ 12-18 month lead before copycats can launch</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 18px; font-weight: 500; margin-bottom: 12px; color: #b86f50;">💡 Function DNA Perfect Fit</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; color: #525252; font-size: 15px; line-height: 1.8;">
+                                <li style="margin-bottom: 8px;">→ Aligns with preventive testing mission</li>
+                                <li style="margin-bottom: 8px;">→ Serves affluent, proactive demographic</li>
+                                <li style="margin-bottom: 8px;">→ Leverages existing lab infrastructure</li>
+                                <li style="margin-bottom: 8px;">→ Natural extension of comprehensive health platform</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 18px; font-weight: 500; margin-bottom: 12px; color: #b86f50;">🚀 Launch Readiness</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; color: #525252; font-size: 15px; line-height: 1.8;">
+                                <li style="margin-bottom: 8px;">→ Quest/LabCorp relationships established</li>
+                                <li style="margin-bottom: 8px;">→ Results platform already built</li>
+                                <li style="margin-bottom: 8px;">→ CLIA compliance infrastructure in place</li>
+                                <li style="margin-bottom: 8px;">→ Q2 2026 launch feasible</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANELS PAGE -->
+    <div id="panels" class="page">
+        <div class="section">
+            <div class="container">
+                <h2 class="section-title">Choose Your <em>Testing Panel</em></h2>
+                <p class="section-subtitle">Select the panel that matches your needs. All tests include results within 7-10 days and access to specialist consultations.</p>
+
+                <div style="background: #f5f2ed; padding: 32px; border-radius: 12px; margin-bottom: 48px;">
+                    <h3 style="font-size: 20px; margin-bottom: 20px; font-weight: 500; text-align: center;">How Function Compares</h3>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden;">
+                            <thead>
+                                <tr style="background: #f5f2ed;">
+                                    <th style="padding: 16px; text-align: left; font-weight: 500; font-size: 14px; border-bottom: 1px solid #e8e3dc;"></th>
+                                    <th style="padding: 16px; text-align: center; font-weight: 500; font-size: 14px; border-bottom: 1px solid #e8e3dc;">Function Health</th>
+                                    <th style="padding: 16px; text-align: center; font-weight: 500; font-size: 14px; border-bottom: 1px solid #e8e3dc;">Traditional Clinic</th>
+                                    <th style="padding: 16px; text-align: center; font-weight: 500; font-size: 14px; border-bottom: 1px solid #e8e3dc;">Modern Fertility</th>
+                                    <th style="padding: 16px; text-align: center; font-weight: 500; font-size: 14px; border-bottom: 1px solid #e8e3dc;">Everlywell</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 16px; font-size: 14px; border-bottom: 1px solid #e8e3dc;">Thrombophilia Testing</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">✓</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">✓</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 16px; font-size: 14px; border-bottom: 1px solid #e8e3dc;">APS Panel</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">✓</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">✓</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 16px; font-size: 14px; border-bottom: 1px solid #e8e3dc;">No Doctor Visit Required</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">✓</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">✓</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">✓</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 16px; font-size: 14px; border-bottom: 1px solid #e8e3dc;">RPL-Specific Interpretation</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">✓</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">Varies</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 16px; font-size: 14px; border-bottom: 1px solid #e8e3dc;">Specialist Matching</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc;">✓</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                    <td style="padding: 16px; text-align: center; border-bottom: 1px solid #e8e3dc; color: #ccc;">—</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 16px; font-size: 14px;">Price</td>
+                                    <td style="padding: 16px; text-align: center; font-weight: 500; color: #b86f50;">$299-899</td>
+                                    <td style="padding: 16px; text-align: center; color: #737373;">$800-1,500</td>
+                                    <td style="padding: 16px; text-align: center; color: #737373;">$159</td>
+                                    <td style="padding: 16px; text-align: center; color: #737373;">$149</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panels-grid">
+                    <div class="panel-card">
+                        <div class="panel-name">Starter</div>
+                        <div class="panel-price">$299</div>
+                        <div class="panel-description">Core reproductive hormones and basic thrombophilia screening</div>
+                        <ul class="panel-features">
+                            <li>AMH, FSH, LH</li>
+                            <li>Comprehensive thyroid panel (TSH, Free T3, Free T4, TPO, Thyroglobulin Ab)</li>
+                            <li>Prolactin</li>
+                            <li>Factor V Leiden</li>
+                            <li>Prothrombin gene mutation</li>
+                            <li>Results dashboard access</li>
+                            <li>RPL-specific interpretation</li>
+                        </ul>
+                        <button class="cta-button" style="width: 100%;">Select Starter</button>
+                    </div>
+
+                    <div class="panel-card recommended">
+                        <span class="recommended-badge">MOST COMPREHENSIVE</span>
+                        <div class="panel-name">Comprehensive</div>
+                        <div class="panel-price">$599</div>
+                        <div class="panel-description">Everything in Starter plus full autoimmune, thrombophilia, and metabolic testing</div>
+                        <ul class="panel-features">
+                            <li>All Starter tests</li>
+                            <li>Full APS panel (Lupus anticoagulant, Anticardiolipin IgG/IgM, Beta-2 Glycoprotein I IgG/IgM)</li>
+                            <li>Complete inherited thrombophilia (Protein C, Protein S, Antithrombin III)</li>
+                            <li>ANA, Anti-dsDNA</li>
+                            <li>Vitamin D, Insulin, HbA1c</li>
+                            <li>Extended thyroid with autoimmune markers</li>
+                            <li>One 30-min specialist consultation included</li>
+                            <li>Priority results review</li>
+                        </ul>
+                        <button class="cta-button" style="width: 100%;">Select Comprehensive</button>
+                    </div>
+
+                    <div class="panel-card">
+                        <div class="panel-name">Advanced</div>
+                        <div class="panel-price">$899</div>
+                        <div class="panel-description">Complete panel plus genetic testing and extended immune workup</div>
+                        <ul class="panel-features">
+                            <li>All Comprehensive tests</li>
+                            <li>Karyotyping (both partners)</li>
+                            <li>NK cell activity testing</li>
+                            <li>Extended inflammatory markers (Homocysteine, High-sensitivity CRP, Fibrinogen)</li>
+                            <li>Celiac panel</li>
+                            <li>D-dimer baseline</li>
+                            <li>Two 30-min specialist consultations</li>
+                            <li>Priority specialist matching</li>
+                            <li>Expedited results (5-7 days)</li>
+                        </ul>
+                        <button class="cta-button" style="width: 100%;">Select Advanced</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 60px; text-align: center; padding: 40px; background: #f5f2ed; border-radius: 12px;">
+                    <h3 style="font-size: 24px; margin-bottom: 12px;">Add-On: Follow-Up Testing</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Track changes over time or after treatment with repeat panels at 33% off</p>
+                    <p style="font-size: 14px; color: #888;">Available for Starter ($199), Comprehensive ($399), or Advanced ($599)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULTS PAGE -->
+    <div id="results" class="page">
+        <div class="section">
+            <div class="container">
+                <h2 class="section-title">Sample Results <em>Dashboard</em></h2>
+                <p class="section-subtitle">See how your results are presented with RPL-specific context and actionable insights</p>
+
+                <div class="results-dashboard">
+                    <div class="result-category">
+                        <h3>
+                            Reproductive Hormones
+                            <span class="status-badge status-normal">Normal Range</span>
+                        </h3>
+                        <div class="result-items">
+                            <div class="result-item">
+                                <div class="result-label">AMH (Anti-Müllerian Hormone)</div>
+                                <div class="result-value">2.01 ng/mL</div>
+                                <div class="result-range">Normal: 1.0-4.0</div>
+                                <div class="result-interpretation">Good ovarian reserve for age 31</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">FSH (Follicle Stimulating Hormone)</div>
+                                <div class="result-value">10.3 mIU/L</div>
+                                <div class="result-range">Normal: 3.0-10.0</div>
+                                <div class="result-interpretation">At upper limit of normal; not concerning with normal AMH</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Prolactin</div>
+                                <div class="result-value">7.0 ng/mL</div>
+                                <div class="result-range">Normal: 2.0-25.0</div>
+                                <div class="result-interpretation">Within optimal range</div>
+                            </div>
+                        </div>
+                        <div class="rpl-insight">
+                            <h4>RPL Context</h4>
+                            <p>Your reproductive hormone levels are reassuring. AMH of 2.01 indicates good egg quantity for your age. While FSH is at the upper limit of normal, this is not uncommon and is not concerning when AMH is normal. These hormone patterns alone are not associated with recurrent pregnancy loss. Your ovarian reserve appears adequate for conception.</p>
+                        </div>
+                    </div>
+
+                    <div class="result-category">
+                        <h3>
+                            Thyroid Function
+                            <span class="status-badge status-normal">Optimal</span>
+                        </h3>
+                        <div class="result-items">
+                            <div class="result-item">
+                                <div class="result-label">TSH</div>
+                                <div class="result-value">1.19 mIU/L</div>
+                                <div class="result-range">Optimal for pregnancy: 0.5-2.5</div>
+                                <div class="result-interpretation">Excellent - in optimal range for conception</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Free T4</div>
+                                <div class="result-value">1.4 ng/dL</div>
+                                <div class="result-range">Normal: 0.8-1.8</div>
+                                <div class="result-interpretation">Within normal range</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">TPO Antibodies</div>
+                                <div class="result-value">8 IU/mL</div>
+                                <div class="result-range">Normal: <35</div>
+                                <div class="result-interpretation">Negative - no autoimmune thyroid disease detected</div>
+                            </div>
+                        </div>
+                        <div class="rpl-insight">
+                            <h4>RPL Context</h4>
+                            <p>Your thyroid function is optimal for pregnancy. TSH in the 1-2 range is ideal for conception and early pregnancy. No evidence of thyroid autoimmunity, which is sometimes associated with pregnancy loss.</p>
+                        </div>
+                    </div>
+
+                    <div class="result-category">
+                        <h3>
+                            Thrombophilia Panel
+                            <span class="status-badge status-concern">Requires Attention</span>
+                        </h3>
+                        <div class="result-items">
+                            <div class="result-item">
+                                <div class="result-label">Factor V Leiden</div>
+                                <div class="result-value">Heterozygous</div>
+                                <div class="result-range">Normal: Negative</div>
+                                <div class="result-interpretation">One copy detected - increases clotting risk</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Prothrombin Gene Mutation</div>
+                                <div class="result-value">Negative</div>
+                                <div class="result-range">Normal: Negative</div>
+                                <div class="result-interpretation">No mutation detected</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Protein C Activity</div>
+                                <div class="result-value">98%</div>
+                                <div class="result-range">Normal: 70-140%</div>
+                                <div class="result-interpretation">Normal activity level</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Protein S Activity</div>
+                                <div class="result-value">65%</div>
+                                <div class="result-range">Normal: 60-130%</div>
+                                <div class="result-interpretation">Low-normal range</div>
+                            </div>
+                        </div>
+                        <div class="rpl-insight">
+                            <h4>⚠️ RPL Context - Important Finding</h4>
+                            <p><strong>Factor V Leiden heterozygosity is clinically significant for recurrent pregnancy loss.</strong> This mutation increases blood clotting risk by 3-8x and is associated with increased risk of miscarriage, particularly in the 8-10 week window when placental circulation is establishing. Your low-normal Protein S may compound this risk.</p>
+                            <p style="margin-top: 12px;"><strong>Recommended action:</strong> Discuss prophylactic anticoagulation (such as Lovenox/enoxaparin) with a maternal-fetal medicine specialist or hematologist before your next pregnancy. Many women with Factor V Leiden and RPL have successful pregnancies with anticoagulation therapy.</p>
+                        </div>
+                    </div>
+
+                    <div class="result-category">
+                        <h3>
+                            Antiphospholipid Syndrome (APS) Panel
+                            <span class="status-badge status-normal">Negative</span>
+                        </h3>
+                        <div class="result-items">
+                            <div class="result-item">
+                                <div class="result-label">Lupus Anticoagulant (dRVVT)</div>
+                                <div class="result-value">Negative</div>
+                                <div class="result-range">Normal: Negative</div>
+                                <div class="result-interpretation">No lupus anticoagulant detected</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Anticardiolipin IgG</div>
+                                <div class="result-value">6 GPL</div>
+                                <div class="result-range">Normal: <20</div>
+                                <div class="result-interpretation">Within normal range</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">Beta-2 Glycoprotein I IgG</div>
+                                <div class="result-value">4 SGU</div>
+                                <div class="result-range">Normal: <20</div>
+                                <div class="result-interpretation">Within normal range</div>
+                            </div>
+                        </div>
+                        <div class="rpl-insight">
+                            <h4>RPL Context</h4>
+                            <p>No evidence of antiphospholipid syndrome. This is reassuring as APS is one of the most treatable causes of RPL. Note: APS requires repeat testing in 12 weeks to confirm diagnosis, but initial screening is negative.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; text-align: center;">
+                    <button class="cta-button" onclick="navigateTo('specialists')">Connect with a Specialist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SPECIALISTS PAGE -->
+    <div id="specialists" class="page">
+        <div class="section">
+            <div class="container">
+                <h2 class="section-title">Connect with RPL <em>Specialists</em></h2>
+                <p class="section-subtitle">Based on your results, we've matched you with specialists who can help interpret your findings and develop a treatment plan</p>
+
+                <div style="max-width: 900px; margin: 40px auto;">
+                    <div class="specialist-card">
+                        <div class="specialist-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                        <div class="specialist-info" style="flex: 1;">
+                            <h4>Dr. Sarah Chen, MD</h4>
+                            <p>Maternal-Fetal Medicine Specialist • 15 years experience</p>
+                            <p style="font-size: 13px; line-height: 1.6;">Specializes in thrombophilia management and high-risk pregnancy. Has helped 500+ women with Factor V Leiden achieve successful pregnancies through evidence-based anticoagulation protocols.</p>
+                            <div class="specialist-tags">
+                                <span class="tag">Thrombophilia Expert</span>
+                                <span class="tag">Recurrent Loss</span>
+                                <span class="tag">Lovenox Protocol</span>
+                                <span class="tag">Available Tues/Thurs</span>
+                            </div>
+                            <button class="cta-button" style="margin-top: 16px; padding: 12px 24px; font-size: 14px;">Schedule Consultation</button>
+                        </div>
+                    </div>
+
+                    <div class="specialist-card">
+                        <div class="specialist-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                        <div class="specialist-info" style="flex: 1;">
+                            <h4>Dr. Michael Rodriguez, MD, PhD</h4>
+                            <p>Reproductive Endocrinologist • 12 years experience</p>
+                            <p style="font-size: 13px; line-height: 1.6;">Board-certified REI with research focus on immunologic causes of pregnancy loss. Comprehensive approach combining hormonal optimization and clotting disorder management.</p>
+                            <div class="specialist-tags">
+                                <span class="tag">REI Specialist</span>
+                                <span class="tag">Immunology</span>
+                                <span class="tag">Research-Focused</span>
+                                <span class="tag">Available Mon/Wed/Fri</span>
+                            </div>
+                            <button class="cta-button" style="margin-top: 16px; padding: 12px 24px; font-size: 14px;">Schedule Consultation</button>
+                        </div>
+                    </div>
+
+                    <div class="specialist-card">
+                        <div class="specialist-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                        <div class="specialist-info" style="flex: 1;">
+                            <h4>Dr. Jennifer Patel, MD</h4>
+                            <p>Hematologist specializing in Pregnancy-Related Thrombosis</p>
+                            <p style="font-size: 13px; line-height: 1.6;">Dual-trained in hematology and obstetric medicine. Expert in managing inherited thrombophilias during pregnancy and optimizing anticoagulation regimens for pregnancy success.</p>
+                            <div class="specialist-tags">
+                                <span class="tag">Hematology</span>
+                                <span class="tag">Pregnancy Thrombosis</span>
+                                <span class="tag">Medication Management</span>
+                                <span class="tag">Available Daily</span>
+                            </div>
+                            <button class="cta-button" style="margin-top: 16px; padding: 12px 24px; font-size: 14px;">Schedule Consultation</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 60px; padding: 40px; background: #f5f2ed; border-radius: 12px; text-align: center;">
+                    <h3 style="font-size: 24px; margin-bottom: 12px;">What to Expect</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px; text-align: left;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px;">📋 Pre-Consultation</div>
+                            <p style="font-size: 14px; color: #666;">Specialist reviews your complete results before your appointment</p>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px;">💬 30-60 Min Virtual Visit</div>
+                            <p style="font-size: 14px; color: #666;">Discuss findings, ask questions, and create treatment plan</p>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px;">📄 Written Summary</div>
+                            <p style="font-size: 14px; color: #666;">Receive detailed recommendations and next steps</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateTo(page) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(page).classList.add('active');
+            
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.page === page) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Nav link click handlers
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateTo(link.dataset.page);
+            });
+        });
+    </script>
+</body>
+</html>
